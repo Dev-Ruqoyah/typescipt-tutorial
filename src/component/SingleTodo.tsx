@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Todos } from "./model";
 interface Props {
   todo: Todos;
@@ -38,12 +38,17 @@ const SingleTodo = ({ todo, setTodos, todos }: Props) => {
     setTodos(saveTo)
     setEdit(!edit)
   }
+
+  const inputRef =  useRef<HTMLInputElement>(null)
+  useEffect(()=>{
+    inputRef.current?.focus()
+  },[edit])
   return (
     <>
       <form action="">
         {edit  && !todo.isDone? (
-          <div>
-            <input onChange={(e)=> setEditTodo(e.target.value)} />
+          <div> 
+            <input onChange={(e)=> setEditTodo(e.target.value)} value={editnewTodo} ref={inputRef} />
             <i onClick={()=>saveTodo(todo.id)}>save</i>
           </div>
         ) : todo.isDone ? (
